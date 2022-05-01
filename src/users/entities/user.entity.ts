@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { CameraProduct } from 'src/camera-products/entities/camera-product.entity';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { TimestampEntity } from '../../generics/timestamp.entity';
 
 export enum UserRoleEnum {
@@ -29,4 +30,6 @@ export class User extends TimestampEntity {
 
   @Column()
   role: UserRoleEnum;
+  @OneToMany(() => CameraProduct, (CameraProduct) => CameraProduct.user)
+  cameras: CameraProduct[];
 }
