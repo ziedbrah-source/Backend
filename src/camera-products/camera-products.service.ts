@@ -31,6 +31,9 @@ export class CameraProductsService {
       throw new InternalServerErrorException();
     }
   }
+  async getAllCamerasByUserId(user: User = null) {
+    return await this.cameraRepository.find({ where: [{ userId: user.id }] });
+  }
 
   findAll() {
     return `This action returns all cameraProducts`;

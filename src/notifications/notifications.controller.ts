@@ -1,8 +1,8 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Post, UseGuards } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { NotificationsService } from './notifications.service';
-import { CreateNotificationDto } from './dto/create-notification.dto';
-@Controller()
+
+@Controller('/notifications')
 export class NotificationsController {
   constructor(private readonly notificationsService: NotificationsService) {}
 
@@ -10,8 +10,6 @@ export class NotificationsController {
   create(@Payload() createNotificationDto: string) {
     // we can make a post request to the main server to get the token , but what if the main server is down, that was the main reason that we user Rabbitmq
     // so we will use the camera id for the moment, and we will have another way soon to make it more secure.
-    console.log(createNotificationDto);
-    let splittedNotification = createNotificationDto;
     return this.notificationsService.create(createNotificationDto);
   }
 

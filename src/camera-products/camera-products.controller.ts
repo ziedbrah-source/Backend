@@ -27,6 +27,11 @@ export class CameraProductsController {
   ) {
     return this.cameraProductsService.create(createCameraProductDto, user);
   }
+  @UseGuards(JwtAuthGuard)
+  @Get('/user')
+  getAllCamerasByUserId(@GetUser() user: User) {
+    return this.cameraProductsService.getAllCamerasByUserId(user);
+  }
 
   @Get()
   findAll() {

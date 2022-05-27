@@ -15,10 +15,10 @@ export class CameraProduct extends TimestampEntity {
   @PrimaryGeneratedColumn()
   id: string;
   @ManyToOne(() => User, (user) => user.cameras, { nullable: false })
-  //@JoinColumn({ name: 'userId' })
+  @JoinColumn({ name: 'userId' })
   user: User;
-  // @Column()
-  // userId: string;
+  @Column()
+  userId: string;
   @OneToMany(() => Notification, (notification) => notification.camera, {
     eager: true,
     nullable: true,
