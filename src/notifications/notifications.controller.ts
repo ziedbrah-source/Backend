@@ -2,15 +2,16 @@ import { Controller } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { NotificationsService } from './notifications.service';
 import { CreateNotificationDto } from './dto/create-notification.dto';
-import { UpdateNotificationDto } from './dto/update-notification.dto';
-
 @Controller()
 export class NotificationsController {
   constructor(private readonly notificationsService: NotificationsService) {}
 
   @MessagePattern('createNotification')
-  create(@Payload() createNotificationDto: CreateNotificationDto) {
-    console.log('WSELNA :D');
+  create(@Payload() createNotificationDto: string) {
+    // we can make a post request to the main server to get the token , but what if the main server is down, that was the main reason that we user Rabbitmq
+    // so we will use the camera id for the moment, and we will have another way soon to make it more secure.
+    console.log(createNotificationDto);
+    let splittedNotification = createNotificationDto;
     return this.notificationsService.create(createNotificationDto);
   }
 
@@ -24,13 +25,13 @@ export class NotificationsController {
     return this.notificationsService.findOne(id);
   }
 
-  @MessagePattern('updateNotification')
-  update(@Payload() updateNotificationDto: UpdateNotificationDto) {
-    return this.notificationsService.update(
-      updateNotificationDto.id,
-      updateNotificationDto,
-    );
-  }
+  // @MessagePattern('updateNotification')
+  // update(@Payload() updateNotificationDto: UpdateNotificationDto) {
+  //   return this.notificationsService.update(
+  //     updateNotificationDto.id,
+  //     updateNotificationDto,
+  //   );
+  // }
 
   @MessagePattern('removeNotification')
   remove(@Payload() id: number) {

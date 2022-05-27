@@ -1,21 +1,35 @@
 import { RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { CreateCameraProductDto } from './dto/create-camera-product.dto';
 import { UpdateCameraProductDto } from './dto/update-camera-product.dto';
 import { ConsumeMessage } from 'amqplib';
+import { InjectRepository } from '@nestjs/typeorm';
+import { CameraProduct } from './entities/camera-product.entity';
+import { Repository } from 'typeorm';
+import { User } from 'src/users/entities/user.entity';
+import { UsersService } from 'src/users/users.service';
 @Injectable()
 export class CameraProductsService {
-  @RabbitSubscribe({
-    exchange: 'exchange1',
-    queue: 'subscribe-queue',
-    routingKey: 'e',
-  })
-  public async pubSubHandler(msg: {}) {
-    console.log(`Received message: ${JSON.stringify(msg)}`);
-  }
-
-  create(createCameraProductDto: CreateCameraProductDto) {
-    return 'This action adds a new cameraProduct';
+  constructor(
+    @InjectRepository(CameraProduct)
+    private cameraRepository: Repository<CameraProduct>,
+    private readonly usersService: UsersService,
+  ) {}
+  async create(
+    createCameraProductDto: CreateCameraProductDto,
+    user: User = null,
+  ) {
+    let camera = new CameraProduct();
+    console.log(user);
+    if (user.email) {
+      camera.user = await this.usersService.getUserByEmail(user.email);
+    }
+    try {
+      return await this.cameraRepository.save(camera);
+    } catch (e) {
+      console.log(e);
+      throw new InternalServerErrorException();
+    }
   }
 
   findAll() {

@@ -25,9 +25,7 @@ export class CameraProductsController {
     @Body() createCameraProductDto: CreateCameraProductDto,
     @GetUser() user: User,
   ) {
-    console.log(user);
-    return;
-    //return this.cameraProductsService.create(createCameraProductDto);
+    return this.cameraProductsService.create(createCameraProductDto, user);
   }
 
   @Get()

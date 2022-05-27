@@ -3,9 +3,12 @@ import { NotificationsService } from './notifications.service';
 import { NotificationsController } from './notifications.controller';
 import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { Notification } from './entities/notification.entity';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
   imports: [
+    TypeOrmModule.forFeature([Notification]),
     ClientsModule.register([
       {
         name: 'camNotif',
