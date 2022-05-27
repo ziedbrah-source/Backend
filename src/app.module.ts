@@ -7,7 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { CameraProductsModule } from './camera-products/camera-products.module';
 import { User } from './users/entities/user.entity';
 import { CameraProduct } from './camera-products/entities/camera-product.entity';
-
+import { NotificationsModule } from './notifications/notifications.module';
 @Module({
   imports: [
     AuthModule,
@@ -19,11 +19,13 @@ import { CameraProduct } from './camera-products/entities/camera-product.entity'
       username: 'root',
       password: '24934500',
       database: 'attentionproject',
-      entities: [User, CameraProduct],
       synchronize: true,
+      entities: ['dist/**/*.entity{.ts,.js}'],
+      keepConnectionAlive: true,
     }),
-
+    AppModule,
     CameraProductsModule,
+    NotificationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

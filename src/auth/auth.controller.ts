@@ -11,6 +11,8 @@ import { LocalAuthGuard } from './local-auth.guard';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dtos/register.dto';
 import { User } from 'src/users/entities/user.entity';
+import { JwtAuthGuard } from './jwt-auth.guard';
+import { GetUser } from './decorator/getUser.paramDecorator';
 
 @Controller('auth')
 export class AuthController {
@@ -25,9 +27,9 @@ export class AuthController {
   register(@Body() registerDto: RegisterDto): Promise<User> {
     return this.authService.register(registerDto);
   }
-  /*   @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Get('profile')
-  getProfile(@Request() req) {
-    return req.user;
-  } */
+  getProfile(@GetUser() user: User) {
+    return user;
+  }
 }

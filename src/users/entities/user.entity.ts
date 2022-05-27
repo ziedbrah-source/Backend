@@ -30,6 +30,8 @@ export class User extends TimestampEntity {
 
   @Column()
   role: UserRoleEnum;
-  @OneToMany(() => CameraProduct, (CameraProduct) => CameraProduct.user)
+  @OneToMany(() => CameraProduct, (CameraProduct) => CameraProduct.user, {
+    eager: true,
+  })
   cameras: CameraProduct[];
 }

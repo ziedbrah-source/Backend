@@ -1,12 +1,24 @@
 import { VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { Transport } from '@nestjs/microservices';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  app.enableVersioning({
-    type: VersioningType.URI,
+  const microServiceApp = await NestFactory.createMicroservice(AppModule, {
+    transport: Transport.RMQ,
+    options: {
+      urls: ['amqp://localhost:5672'],
+      queue: 'camNotif',
+      queueOptions: {
+        durable: true,
+      },
+    },
   });
-  await app.listen(3000);
+
+  await microServiceApp.listen();
+
+  const app = await NestFactory.create(AppModule);
+  app.enableCors();
+  await app.listen(5500);
 }
 bootstrap();
