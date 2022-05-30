@@ -2,6 +2,7 @@ import { RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
 import {
   Injectable,
   InternalServerErrorException,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { CreateCameraProductDto } from './dto/create-camera-product.dto';
@@ -12,11 +13,14 @@ import { CameraProduct } from './entities/camera-product.entity';
 import { Repository } from 'typeorm';
 import { User } from 'src/users/entities/user.entity';
 import { UsersService } from 'src/users/users.service';
+import { NotificationsService } from 'src/notifications/notifications.service';
+import { NotFoundError } from 'rxjs';
 @Injectable()
 export class CameraProductsService {
   constructor(
     @InjectRepository(CameraProduct)
     private cameraRepository: Repository<CameraProduct>,
+    private readonly notificationsServer: NotificationsService,
     private readonly usersService: UsersService,
   ) {}
   async create(
@@ -39,8 +43,18 @@ export class CameraProductsService {
     return await this.cameraRepository.find({ where: [{ userId: user.id }] });
   }
 
-  findAll() {
-    return `This action returns all cameraProducts`;
+  async getNotificationById(id: number, user: User = null) {
+    const notification = await this.notificationsServer.findOne(id);
+    if (notification) {
+      const camera = await this.findOne(+notification.cameraId, user);
+      if (camera) {
+        return notification;
+      } else {
+        throw new NotFoundException('No Notification By this Id');
+      }
+    } else {
+      throw new NotFoundException('No Notification By this Id');
+    }
   }
 
   async findOne(id: number, user: User) {
@@ -50,10 +64,6 @@ export class CameraProductsService {
     } else {
       throw new UnauthorizedException("You can't access this ressource.");
     }
-  }
-
-  update(id: number, updateCameraProductDto: UpdateCameraProductDto) {
-    return `This action updates a #${id} cameraProduct`;
   }
 
   remove(id: number) {

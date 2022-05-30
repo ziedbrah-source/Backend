@@ -32,23 +32,28 @@ export class CameraProductsController {
     return this.cameraProductsService.getAllCamerasByUserId(user);
   }
 
-  @Get()
-  findAll() {
-    return this.cameraProductsService.findAll();
-  }
+  // @Get()
+  // findAll() {
+  //   return this.cameraProductsService.findAll();
+  // }
   @UseGuards(JwtAuthGuard)
   @Get(':id')
   findOne(@Param('id') id: string, @GetUser() user: User) {
     return this.cameraProductsService.findOne(+id, user);
   }
-
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateCameraProductDto: UpdateCameraProductDto,
-  ) {
-    return this.cameraProductsService.update(+id, updateCameraProductDto);
+  @UseGuards(JwtAuthGuard)
+  @Get('notifications/:id')
+  findOneNotification(@Param('id') id: string, @GetUser() user: User) {
+    return this.cameraProductsService.getNotificationById(+id, user);
   }
+
+  // @Patch(':id')
+  // update(
+  //   @Param('id') id: string,
+  //   @Body() updateCameraProductDto: UpdateCameraProductDto,
+  // ) {
+  //   return this.cameraProductsService.update(+id, updateCameraProductDto);
+  // }
 
   @Delete(':id')
   remove(@Param('id') id: string) {

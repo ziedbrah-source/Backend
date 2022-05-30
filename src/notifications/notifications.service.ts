@@ -26,7 +26,7 @@ export class NotificationsService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} notification`;
+    return this.notificationRepository.findOne(id);
   }
 
   // update(id: number, updateNotificationDto: UpdateNotificationDto) {
