@@ -8,7 +8,6 @@ import {
   Delete,
   UseGuards,
 } from '@nestjs/common';
-import { EventPattern, Payload } from '@nestjs/microservices';
 import { CameraProductsService } from './camera-products.service';
 import { CreateCameraProductDto } from './dto/create-camera-product.dto';
 import { UpdateCameraProductDto } from './dto/update-camera-product.dto';
@@ -37,10 +36,10 @@ export class CameraProductsController {
   findAll() {
     return this.cameraProductsService.findAll();
   }
-
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.cameraProductsService.findOne(+id);
+  findOne(@Param('id') id: string, @GetUser() user: User) {
+    return this.cameraProductsService.findOne(+id, user);
   }
 
   @Patch(':id')

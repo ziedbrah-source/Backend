@@ -1,5 +1,9 @@
 import { RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { CreateCameraProductDto } from './dto/create-camera-product.dto';
 import { UpdateCameraProductDto } from './dto/update-camera-product.dto';
 import { ConsumeMessage } from 'amqplib';
@@ -39,8 +43,14 @@ export class CameraProductsService {
     return `This action returns all cameraProducts`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} cameraProduct`;
+  async findOne(id: number, user: User) {
+    const camera = await this.cameraRepository.findOne({ where: [{ id: id }] });
+    if (camera.userId === user.id) {
+      console.log('ay aw bech nraja3');
+      return camera;
+    } else {
+      throw new UnauthorizedException("You can't access this ressource.");
+    }
   }
 
   update(id: number, updateCameraProductDto: UpdateCameraProductDto) {
