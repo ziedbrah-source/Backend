@@ -46,7 +46,6 @@ export class CameraProductsService {
   async findOne(id: number, user: User) {
     const camera = await this.cameraRepository.findOne({ where: [{ id: id }] });
     if (camera.userId === user.id) {
-      console.log('ay aw bech nraja3');
       return camera;
     } else {
       throw new UnauthorizedException("You can't access this ressource.");
