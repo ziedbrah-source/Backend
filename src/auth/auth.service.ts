@@ -47,8 +47,8 @@ export class AuthService {
   }
   async linkUserWithDevice(token: string, user: User) {
     let userInfo = await this.usersService.findOne(user.id);
-    if (user) {
-      user.deviceToken = token;
+    if (userInfo) {
+      userInfo.deviceToken = token;
       await this.usersService.internalUpdate(user);
       return token;
     } else {
