@@ -30,16 +30,17 @@ export class NotificationsService {
     let camera = await this.cameraProductService.findOneById(
       +notification.cameraId,
     );
-
+    let savedNotification;
     if (camera) {
       const user = await this.usersService.findOne(camera.userId);
+      savedNotification = await this.notificationRepository.save(notification);
       // Check that all your push tokens appear to be valid Expo push tokens
       if (user.deviceToken && Expo.isExpoPushToken(user.deviceToken)) {
         messages.push({
           to: user.deviceToken,
           sound: 'default',
           body: 'Camera User is Driving and not giving full attention !',
-          data: { withSome: 'data' },
+          data: { id: savedNotification.id },
         });
         console.log('notification SENT');
         let chunks = expo.chunkPushNotifications(messages);
@@ -64,7 +65,7 @@ export class NotificationsService {
         })();
       }
     }
-    return this.notificationRepository.save(notification);
+    return savedNotification;
   }
 
   findAll() {
