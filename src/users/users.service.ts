@@ -23,6 +23,9 @@ export class UsersService {
   async remove(id: string): Promise<void> {
     await this.usersRepository.delete(id);
   }
+  async internalUpdate(user: User) {
+    await this.usersRepository.save(user);
+  }
   async getUserByEmail(email: string): Promise<User> {
     return await this.usersRepository.findOne({
       where: [{ email }],

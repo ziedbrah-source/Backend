@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { RegisterDto } from './dtos/register.dto';
@@ -40,5 +44,15 @@ export class AuthService {
     user = await this.usersService.create(registerDto);
     delete user.password;
     return user;
+  }
+  async linkUserWithDevice(token: string, user: User) {
+    let userInfo = await this.usersService.findOne(user.id);
+    if (user) {
+      user.deviceToken = token;
+      await this.usersService.internalUpdate(user);
+      return token;
+    } else {
+      throw new NotFoundException('SORRY NO USER WITH THIS ID');
+    }
   }
 }

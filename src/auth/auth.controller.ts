@@ -21,7 +21,6 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Request() req) {
-    console.log('HANI WSELET LEHNEEEEEEE');
     return this.authService.login(req.user);
   }
   @Post('register')
@@ -32,5 +31,12 @@ export class AuthController {
   @Get('profile')
   getProfile(@GetUser() user: User) {
     return user;
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('profile/expotoken')
+  PostExpoToken(@GetUser() user: User, @Body() token) {
+    console.log(token.token);
+    return this.authService.linkUserWithDevice(token.token, user);
   }
 }

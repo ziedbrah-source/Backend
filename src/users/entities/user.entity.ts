@@ -34,4 +34,9 @@ export class User extends TimestampEntity {
     eager: true,
   })
   cameras: CameraProduct[];
+  @Column({
+    //unique: true, it depends if one user==one Device or nah, let's say NAH AT THE MOMENT
+    nullable: true,
+  })
+  deviceToken: string;
 }
