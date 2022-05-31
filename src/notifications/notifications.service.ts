@@ -62,11 +62,6 @@ export class NotificationsService {
             }
           }
         })();
-        // const response = await this.httpService.post(
-        //   'https://exp.host/--/api/v2/push/send',
-        //   message,
-        // );
-        // console.log('Response here: ', response);
       }
     }
     return this.notificationRepository.save(notification);
