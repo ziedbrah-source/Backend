@@ -1,10 +1,11 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { NotificationsService } from './notifications.service';
 import { NotificationsController } from './notifications.controller';
-import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { Notification } from './entities/notification.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { CameraProductsModule } from 'src/camera-products/camera-products.module';
+import { UsersModule } from 'src/users/users.module';
 
 @Module({
   imports: [
@@ -22,6 +23,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         },
       },
     ]),
+    forwardRef(() => CameraProductsModule),
+    UsersModule,
   ],
   controllers: [NotificationsController],
   providers: [NotificationsService],

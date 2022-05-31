@@ -1,5 +1,7 @@
 import { RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
 import {
+  forwardRef,
+  Inject,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
@@ -14,12 +16,12 @@ import { Repository } from 'typeorm';
 import { User } from 'src/users/entities/user.entity';
 import { UsersService } from 'src/users/users.service';
 import { NotificationsService } from 'src/notifications/notifications.service';
-import { NotFoundError } from 'rxjs';
 @Injectable()
 export class CameraProductsService {
   constructor(
     @InjectRepository(CameraProduct)
     private cameraRepository: Repository<CameraProduct>,
+    @Inject(forwardRef(() => NotificationsService))
     private readonly notificationsServer: NotificationsService,
     private readonly usersService: UsersService,
   ) {}
@@ -64,6 +66,9 @@ export class CameraProductsService {
     } else {
       throw new UnauthorizedException("You can't access this ressource.");
     }
+  }
+  async findOneById(id: number) {
+    return await this.cameraRepository.findOne({ where: [{ id: id }] });
   }
 
   remove(id: number) {

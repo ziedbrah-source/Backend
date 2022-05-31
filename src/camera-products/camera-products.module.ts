@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { CameraProductsService } from './camera-products.service';
 import { CameraProductsController } from './camera-products.controller';
 import { CameraProduct } from './entities/camera-product.entity';
@@ -9,9 +9,10 @@ import { NotificationsModule } from 'src/notifications/notifications.module';
   imports: [
     TypeOrmModule.forFeature([CameraProduct]),
     UsersModule,
-    NotificationsModule,
+    forwardRef(() => NotificationsModule),
   ],
   controllers: [CameraProductsController],
   providers: [CameraProductsService],
+  exports: [CameraProductsService],
 })
 export class CameraProductsModule {}
