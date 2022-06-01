@@ -70,4 +70,31 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 
 ## License
 
-Nest is [MIT licensed](LICENSE).
+
+## AI_Part
+
+Dependencies
+import cv2
+import imutils
+import dlib
+import scipy
+Description 📌
+A computer vision system that can automatically detect driver drowsiness in a real-time video stream and then play an alarm if the driver appears to be drowsy.
+
+Algorithm 👨‍🔬
+Each eye is represented by 6 (x, y)-coordinates, starting at the left-corner of the eye (as if you were looking at the person), and then working clockwise around the eye.
+
+It checks 20 consecutive frames and if the Eye Aspect ratio is less than 0.25, Alert is generated.
+
+![eye1](https://user-images.githubusercontent.com/66105169/171357237-48f4b622-d6c1-4eda-a4c0-165e215cbafd.jpg)
+
+
+
+Relationship
+
+![eye2](https://user-images.githubusercontent.com/66105169/171357335-6c13b4ba-f95a-4974-a973-665665462865.png)
+
+
+Summing up
+
+![eye3](https://user-images.githubusercontent.com/66105169/171357150-8fc86bb5-b0d8-4f28-ab2a-22ad4d203a45.jpg)
