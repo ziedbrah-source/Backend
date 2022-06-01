@@ -85,13 +85,16 @@ Algorithm 👨‍🔬
 Each eye is represented by 6 (x, y)-coordinates, starting at the left-corner of the eye (as if you were looking at the person), and then working clockwise around the eye.
 
 It checks 20 consecutive frames and if the Eye Aspect ratio is less than 0.25, Alert is generated.
+
 ![eye1](https://user-images.githubusercontent.com/66105169/171357237-48f4b622-d6c1-4eda-a4c0-165e215cbafd.jpg)
 
 
 
 Relationship
+
 ![eye2](https://user-images.githubusercontent.com/66105169/171357335-6c13b4ba-f95a-4974-a973-665665462865.png)
 
 
-Summi![eye3](https://user-images.githubusercontent.com/66105169/171357150-8fc86bb5-b0d8-4f28-ab2a-22ad4d203a45.jpg)
-ng up
+Summing up
+
+![eye3](https://user-images.githubusercontent.com/66105169/171357150-8fc86bb5-b0d8-4f28-ab2a-22ad4d203a45.jpg)
