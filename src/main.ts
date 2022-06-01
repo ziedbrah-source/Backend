@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { Transport } from '@nestjs/microservices';
 import { AppModule } from './app.module';
-
+import * as dotenv from 'dotenv';
 async function bootstrap() {
   const microServiceApp = await NestFactory.createMicroservice(AppModule, {
     transport: Transport.RMQ,
@@ -19,6 +19,7 @@ async function bootstrap() {
     origin: '*',
     optionsSuccessStatus: 200,
   };
+  dotenv.config();
   const app = await NestFactory.create(AppModule);
   app.enableCors();
   await app.listen(5500);
